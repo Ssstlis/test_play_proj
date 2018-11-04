@@ -5,13 +5,11 @@ import play.api.mvc._
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.higherKinds
-import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
 class AuthUtils @Inject()(
   defaultParser: BodyParsers.Default
-) {
-  implicit val ec: ExecutionContext = global
+)(implicit ec: ExecutionContext) {
 
   abstract class AbstractActionBuilder[T[_]] extends ActionBuilder[T, AnyContent] {
     override protected def executionContext = ec
@@ -38,7 +36,7 @@ class AuthUtils @Inject()(
             userO.map { user =>
               block(UserRequest(user, request))
             }.getOrElse(Future.successful(Results.GatewayTimeout))
-          }.recover { case _ => Results.ImATeapot}(global)
+          }.recover { case _ => Results.ImATeapot}
         }
         .getOrElse(Future.successful(Results.BadRequest))
     }

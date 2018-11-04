@@ -1,2 +1,2 @@
-GET        /first_test         controllers.MainController.test
-GET        /first_test2        controllers.MainController.test2
+POST        /first_test         controllers.MainController.test
+GET         /first_test2        controllers.MainController.test2
